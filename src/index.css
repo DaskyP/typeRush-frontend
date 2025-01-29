@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Coolvetica Regular';
+    src: url('/fonts/Coolvetica\ Rg.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Coolvetica Italic';
+    src: url('/fonts/Coolvetica\ Rg\ It.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Coolvetica Bold';
+    src: url('/fonts/Coolvetica\ Hv\ Comp.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Coolvetica Regular', sans-serif;
+}
