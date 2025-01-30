@@ -87,6 +87,14 @@ const LoginForm = () => {
           </Link>
         </p>
       </div>
+      <div className="flex justify-between mt-6 ">
+        <button className="flex items-center justify-center w-36 h-12 border border-gray-500 rounded-lg bg-[#242424] hover:bg-[#2d2d2d] transition">
+          <img src="/discord.svg" alt="Discord" className="w-8 h-8" />
+        </button>
+        <button className="flex items-center justify-center w-36 h-12 border border-gray-500 rounded-lg bg-[#242424] hover:bg-[#2d2d2d] transition">
+          <img src="/github.svg" alt="GitHub" className="w-8 h-8" />
+        </button>
+      </div>
     </AuthLayout>
   );
 };
