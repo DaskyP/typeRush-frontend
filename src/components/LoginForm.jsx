@@ -3,12 +3,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { loginUser } from "../api";
 import { AuthContext } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 
 const LoginForm = () => {
   const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate(); 
 
   const formik = useFormik({
     initialValues: {
@@ -21,8 +22,12 @@ const LoginForm = () => {
     }),
     onSubmit: async (values) => {
       const response = await loginUser(values);
+
+      console.log("Datos del usuario al iniciar sesión:", response.user); 
+
       if (response.token) {
         login(response.user, response.token);
+        navigate("/");
       } else {
         setError(response.error || "Credenciales incorrectas");
       }
@@ -42,7 +47,7 @@ const LoginForm = () => {
               type="email"
               id="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder="user@email.com"
               value={formik.values.email}
               onChange={formik.handleChange}
               className="w-full bg-[#303133] text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -69,31 +74,19 @@ const LoginForm = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-md transition duration-200"
+            className="w-full mt-2 bg-[#23315E] hover:bg-blue-700 text-white font-bold py-3 rounded-md transition duration-200"
           >
             Login
           </button>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         </form>
-        <p className="text-gray-400 text-sm mt-6 text-center">
+        <p className="text-gray-400 text-sm mt-2 text-end">
           ¿No tienes una cuenta?{" "}
           <Link to="/register" className="text-blue-400 hover:underline">
             Regístrate
           </Link>
         </p>
-
-{/* Botones de login con redes */}
-        <div className="flex justify-center mt-6 space-x-20">
-            <button className="flex items-center justify-center w-36 h-12 border border-gray-500 rounded-lg bg-[#242424] hover:bg-[#2d2d2d] transition">
-              <img src="/discord.svg" alt="Discord" className="w-8 h-8" />
-            </button>
-            <button className="flex items-center justify-center w-36 h-12 border border-gray-500 rounded-lg bg-[#242424] hover:bg-[#2d2d2d] transition">
-              <img src="/github.svg" alt="GitHub" className="w-8 h-8" />
-            </button>
-        </div>
-
       </div>
-
     </AuthLayout>
   );
 };

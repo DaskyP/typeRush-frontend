@@ -7,7 +7,7 @@ const AuthLayout = ({ children, backgroundImage, fullImage = false, imageStyle =
       </div>
 
       <div className="flex w-1/2 items-center justify-center">
-        <div className="bg-[#191919] rounded-xl z-2 shadow-lg w-full max-w-md p-10 ">
+        <div className="bg-[#191919] rounded-xl z-2 shadow-lg w-full max-w-xl p-12">
           {children}
         </div>
       </div>
