@@ -1,17 +1,21 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { fetchData } from "../api";
+
+const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 const ProfileForm = () => {
-  const { user, updateUser } = useContext(AuthContext);
+  const { user, updateUser, loading } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: user?.username || "",
     email: user?.email || "",
     password: "******", 
   });
 
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    console.log("🔍 Usuario cargado en ProfileForm:", user);
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -22,56 +26,63 @@ const ProfileForm = () => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setMessage("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
 
-  try {
-    const response = await fetchData(`/api/users/${user.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        username: formData.username,
-        email: formData.email,
-        password: formData.password !== "******" ? formData.password : undefined,
-      }),
-    });
-
-    if (!response) {
-      throw new Error("Error al actualizar el perfil");
+    if (!user || !user.id) {
+      console.error("🚨 Error: user.id es undefined en ProfileForm.jsx");
+      setMessage("Error: No se puede actualizar el perfil. Recarga la página.");
+      return;
     }
 
-    console.log("🟢 Respuesta del servidor después de cambiar contraseña:", response);
+    try {
+      const response = await fetch(`${API_URL}/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password !== "******" ? formData.password : undefined,
+        }),
+      });
 
-    if (response.token) {
-      console.log("🟢 Nuevo token después del cambio de contraseña:", response.token);
-      localStorage.setItem("token", response.token);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("🟢 Respuesta del servidor:", data);
+
+      if (data.token) {
+        console.log("🟢 Nuevo token recibido:", data.token);
+        localStorage.setItem("token", data.token);
+      }
+
+      updateUser(data.user);
+      setMessage("Perfil actualizado con éxito ✅");
+    } catch (error) {
+      console.error("🔴 Error en la petición:", error);
+      setMessage(error.message || "Ocurrió un error inesperado");
     }
+  };
 
-    updateUser({
-      ...user,
-      username: response.user.username,
-      email: response.user.email,
-    });
-
-    setMessage("Perfil actualizado con éxito");
-  } catch (error) {
-    console.error("🔴 Error en la petición:", error);
-    setMessage(error.message);
-  } finally {
-    setLoading(false);
+  if (loading) {
+    return <p className="text-center text-gray-400">Cargando perfil...</p>;
   }
-};
 
-  
+  if (!user || !user.id) {
+    return <p className="text-center text-red-500">Error: No se pudo cargar el usuario. Recarga la página.</p>;
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      {message && <p className="text-green-400">{message}</p>}
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 bg-gray-900 p-6 rounded-lg shadow-md">
+      {message && <p className={`text-sm p-2 rounded ${message.includes("Error") ? "text-red-400 bg-red-900" : "text-green-400 bg-green-900"}`}>
+        {message}
+      </p>}
 
       <div>
         <label className="text-gray-400 block text-sm">Username</label>
@@ -80,7 +91,7 @@ const handleSubmit = async (e) => {
           name="username"
           value={formData.username}
           onChange={handleChange}
-          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700"
+          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
           required
         />
       </div>
@@ -92,7 +103,7 @@ const handleSubmit = async (e) => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700"
+          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
           required
         />
       </div>
@@ -104,16 +115,15 @@ const handleSubmit = async (e) => {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700"
+          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
         />
       </div>
 
       <button
         type="submit"
         className="bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
-        disabled={loading}
       >
-        {loading ? "Guardando..." : "Guardar cambios"}
+        Guardar cambios
       </button>
     </form>
   );
