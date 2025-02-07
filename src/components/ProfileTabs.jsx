@@ -1,42 +1,45 @@
 import { useState } from "react";
-import ProfileContent from "./ProfileContent"; 
-import SettingsContent from "./SettingsContent"; 
+import ProfileForm from "./ProfileForm";
 
-const ProfileTabs = () => {
+// eslint-disable-next-line react/prop-types
+const ProfileTabs = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("perfil");
 
   return (
-    <div>
+    <>
       {/* Navegación de Tabs */}
-      <div className="flex border-b border-gray-600">
-        <button
-          className={`px-4 py-2 font-medium ${
-            activeTab === "perfil"
-              ? "border-b-2 border-white text-white"
-              : "text-gray-400"
-          }`}
-          onClick={() => setActiveTab("perfil")}
-        >
-          Perfil
-        </button>
-        <button
-          className={`px-4 py-2 font-medium ${
-            activeTab === "configuracion"
-              ? "border-b-2 border-white text-white"
-              : "text-gray-400"
-          }`}
-          onClick={() => setActiveTab("configuracion")}
-        >
-          Configuración
+      <div className="flex items-center border-b-2 border-gray-300 text-white pb-2">
+        <div className="flex space-x-10 text-xl">
+          <button
+            className={`pb-2 transition duration-200 ${
+              activeTab === "perfil" ? " font-semibold" : "text-gray-400"
+            }`}
+            onClick={() => setActiveTab("perfil")}
+          >
+            Perfil
+          </button>
+          <button
+            className={`pb-2 transition duration-200 ${
+              activeTab === "config" ? " font-semibold" : "text-gray-400"
+            }`}
+            onClick={() => setActiveTab("config")}
+          >
+            Configuración
+          </button>
+        </div>
+
+        <button onClick={onClose} className="ml-auto mb-2">
+          <img src="/close.svg" alt="Cerrar" className="w-10 h-10" />
         </button>
       </div>
 
-      {/* Contenido del Tab */}
-      <div className="p-4">
-        {activeTab === "perfil" && <ProfileContent />}
-        {activeTab === "configuracion" && <SettingsContent />}
+      <div className="mt-6 h-full">
+        {activeTab === "perfil" && <ProfileForm onClose={onClose} />}
+        {activeTab === "config" && (
+          <p className="text-gray-400">Aquí irán las configuraciones.</p>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

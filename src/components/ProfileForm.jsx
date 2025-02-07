@@ -3,28 +3,34 @@ import { AuthContext } from "../context/AuthContext";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
-const ProfileForm = () => {
+// eslint-disable-next-line react/prop-types
+const ProfileForm = ({ onClose }) => {
   const { user, updateUser, loading } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    username: user?.username || "",
-    email: user?.email || "",
-    password: "******",
+    username: "",
+    email: "",
+    password: "",
   });
 
-  const [avatar, setAvatar] = useState(user?.avatar ? `${API_URL}${user.avatar}` : "");
+  const [avatar, setAvatar] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    console.log("🔍 Usuario cargado en ProfileForm:", user);
-  }, [user]);
+    if (!loading && user) {
+      setFormData({
+        username: user.username || "",
+        email: user.email || "",
+        password: "",
+      });
+      setAvatar(user.avatar ? `${API_URL}${user.avatar}` : "");
+    }
+  }, [loading, user]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.name === "password" && prev.password === "******"
-        ? e.target.value 
-        : e.target.value,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -32,7 +38,7 @@ const ProfileForm = () => {
     if (e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedFile(file);
-      setAvatar(URL.createObjectURL(file)); 
+      setAvatar(URL.createObjectURL(file)); // Vista previa de la imagen seleccionada
     }
   };
 
@@ -49,7 +55,7 @@ const ProfileForm = () => {
     const formDataToSend = new FormData();
     formDataToSend.append("username", formData.username);
     formDataToSend.append("email", formData.email);
-    if (formData.password !== "******") {
+    if (formData.password) {
       formDataToSend.append("password", formData.password);
     }
     if (selectedFile) {
@@ -73,7 +79,6 @@ const ProfileForm = () => {
       console.log("🟢 Respuesta del servidor:", data);
 
       if (data.token) {
-        console.log("🟢 Nuevo token recibido:", data.token);
         localStorage.setItem("token", data.token);
       }
 
@@ -93,73 +98,72 @@ const ProfileForm = () => {
     return <p className="text-center text-gray-400">Cargando perfil...</p>;
   }
 
-  if (!user || !user.id) {
-    return <p className="text-center text-red-500">Error: No se pudo cargar el usuario. Recarga la página.</p>;
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-6 rounded-lg shadow-md">
-      {message && <p className={`text-sm p-2 rounded ${message.includes("Error") ? "text-red-400 bg-red-900" : "text-green-400 bg-green-900"}`}>
+    <form 
+      onSubmit={handleSubmit} 
+      className="p-4 rounded-lg w-full h-full flex flex-col justify-between"
+    >
+      {message && <p className={`text-sm p-2 rounded text-center ${message.includes("Error") ? "text-red-400 bg-red-900" : "text-green-400 bg-green-900"}`}>
         {message}
       </p>}
 
-      {/* 🔹 Vista previa del avatar */}
-      <div className="flex flex-col items-center">
-        <img 
-          src={avatar} 
-          alt="Avatar" 
-          className="w-24 h-24 rounded-full object-cover border-2 border-gray-500"
-          onError={(e) => e.target.src = "https://via.placeholder.com/100"}
-        />
-        <input 
-          type="file" 
-          accept="image/*" 
-          onChange={handleFileChange} 
-          className="mt-2 text-gray-300"
-        />
+      <h2 className="text-white text-4xl font-bold mb-2">Perfil</h2>
+      <p className="text-gray-400 mb-6">Gestiona tu información personal y cómo otros te ven en la plataforma.</p>
+
+      <div className="grid grid-cols-2 gap-6 items-center flex-grow">
+        <div className="space-y-4">
+          <div>
+            <label className="text-gray-400 block text-sm font-semibold">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full p-2  text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-gray-400 block text-sm font-semibold">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full p-2 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-gray-400 block text-sm font-semibold">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full p-2 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+        </div>
+
+        {/* Avatar */}
+        <div className="flex flex-col items-center">
+          <img src={avatar} alt="Avatar" className="w-60 h-60 rounded-full border-2 border-gray-500 object-cover" />
+          <label className="mt-4 flex items-center space-x-2 bg-gray-700 px-3 py-1 text-white rounded-lg cursor-pointer hover:bg-gray-600 transition">
+            <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+            <span>Subir</span>
+          </label>
+        </div>
       </div>
 
-      <div>
-        <label className="text-gray-400 block text-sm">Username</label>
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
-          required
-        />
+      {/* Botones */}
+      <div className="flex justify-end space-x-4 mt-6">
+        <button type="button" onClick={onClose} className="bg-gray-600 px-4 py-2 text-white rounded hover:bg-gray-500 transition">Cancelar</button>
+        <button type="submit" className="bg-green-600 px-4 py-2 text-white rounded hover:bg-green-500 transition">Guardar</button>
+        <button type="submit" onClick={onClose} className="bg-green-700 px-4 py-2 text-white rounded hover:bg-green-600 transition">Guardar y cerrar</button>
       </div>
-
-      <div>
-        <label className="text-gray-400 block text-sm">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="text-gray-400 block text-sm">Contraseña (opcional)</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 focus:ring-2 focus:ring-green-500"
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
-      >
-        Guardar cambios
-      </button>
     </form>
   );
 };
