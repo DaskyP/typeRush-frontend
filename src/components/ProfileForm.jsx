@@ -8,9 +8,11 @@ const ProfileForm = () => {
   const [formData, setFormData] = useState({
     username: user?.username || "",
     email: user?.email || "",
-    password: "******", 
+    password: "******",
   });
 
+  const [avatar, setAvatar] = useState(user?.avatar ? `${API_URL}${user.avatar}` : "");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -26,6 +28,14 @@ const ProfileForm = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setAvatar(URL.createObjectURL(file)); 
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -36,18 +46,23 @@ const ProfileForm = () => {
       return;
     }
 
+    const formDataToSend = new FormData();
+    formDataToSend.append("username", formData.username);
+    formDataToSend.append("email", formData.email);
+    if (formData.password !== "******") {
+      formDataToSend.append("password", formData.password);
+    }
+    if (selectedFile) {
+      formDataToSend.append("avatar", selectedFile);
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/users/${user.id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password !== "******" ? formData.password : undefined,
-        }),
+        body: formDataToSend, 
       });
 
       if (!response.ok) {
@@ -60,6 +75,10 @@ const ProfileForm = () => {
       if (data.token) {
         console.log("🟢 Nuevo token recibido:", data.token);
         localStorage.setItem("token", data.token);
+      }
+
+      if (data.user.avatar) {
+        setAvatar(`${API_URL}${data.user.avatar}`);
       }
 
       updateUser(data.user);
@@ -79,10 +98,26 @@ const ProfileForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 bg-gray-900 p-6 rounded-lg shadow-md">
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-6 rounded-lg shadow-md">
       {message && <p className={`text-sm p-2 rounded ${message.includes("Error") ? "text-red-400 bg-red-900" : "text-green-400 bg-green-900"}`}>
         {message}
       </p>}
+
+      {/* 🔹 Vista previa del avatar */}
+      <div className="flex flex-col items-center">
+        <img 
+          src={avatar} 
+          alt="Avatar" 
+          className="w-24 h-24 rounded-full object-cover border-2 border-gray-500"
+          onError={(e) => e.target.src = "https://via.placeholder.com/100"}
+        />
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={handleFileChange} 
+          className="mt-2 text-gray-300"
+        />
+      </div>
 
       <div>
         <label className="text-gray-400 block text-sm">Username</label>

@@ -1,10 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import ProfileModal from "./ProfileModal";
+
+const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [avatar, setAvatar] = useState(user?.avatar ? `${API_URL}${user.avatar}` : "");
+
+  useEffect(() => {
+    if (user?.avatar) {
+      setAvatar(`${API_URL}${user.avatar}`);
+    }
+  }, [user?.avatar]);
 
   return (
     <>
@@ -26,7 +35,7 @@ const Navbar = () => {
 
           <div className="flex items-center space-x-3">
             <img
-              src={user?.avatar || "https://ui-avatars.com/api/?name=User&background=random&color=fff"}
+              src={avatar || "https://ui-avatars.com/api/?name=User&background=random&color=fff"}
               alt="Usuario"
               className="w-10 h-10 rounded-full border border-gray-500 cursor-pointer"
               onClick={() => setIsModalOpen(true)}
@@ -40,7 +49,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Modal renderizada dentro del mismo flujo */}
       <ProfileModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
