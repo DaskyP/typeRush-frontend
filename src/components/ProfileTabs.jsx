@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ProfileForm from "./ProfileForm";
+import ProfileConfiguration from "./ProfileConfiguration";
 
 // eslint-disable-next-line react/prop-types
 const ProfileTabs = ({ onClose }) => {
@@ -7,12 +8,11 @@ const ProfileTabs = ({ onClose }) => {
 
   return (
     <>
-      {/* Navegación de Tabs */}
       <div className="flex items-center border-b-2 border-gray-300 text-white pb-2">
-        <div className="flex space-x-10 text-xl">
+        <div className="flex space-x-16 text-xl">
           <button
             className={`pb-2 transition duration-200 ${
-              activeTab === "perfil" ? " font-semibold" : "text-gray-400"
+              activeTab === "perfil" ? "font-semibold border-b-2 border-white" : "text-gray-400"
             }`}
             onClick={() => setActiveTab("perfil")}
           >
@@ -20,7 +20,7 @@ const ProfileTabs = ({ onClose }) => {
           </button>
           <button
             className={`pb-2 transition duration-200 ${
-              activeTab === "config" ? " font-semibold" : "text-gray-400"
+              activeTab === "config" ? "font-semibold border-b-2 border-white" : "text-gray-400"
             }`}
             onClick={() => setActiveTab("config")}
           >
@@ -35,9 +35,7 @@ const ProfileTabs = ({ onClose }) => {
 
       <div className="mt-6 h-full">
         {activeTab === "perfil" && <ProfileForm onClose={onClose} />}
-        {activeTab === "config" && (
-          <p className="text-gray-400">Aquí irán las configuraciones.</p>
-        )}
+        {activeTab === "config" && <ProfileConfiguration />}
       </div>
     </>
   );
