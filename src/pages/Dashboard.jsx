@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import Particle from "../components/Particle";
 import Navbar from "../components/Navbar";
 import MusicPlayerModal from "../components/MusicPlayerModal"; 
+import SettingsBar from "../components/SettingsBar"; 
 
 const Dashboard = () => {
-  const [, setInit] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false); 
+  const particlesInitialized = useRef(false); 
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
-  }, []);
+    if (!particlesInitialized.current) {
+      particlesInitialized.current = true; 
+      initParticlesEngine(async (engine) => {
+        await loadSlim(engine);
+      });
+    }
+  }, []); 
 
   return (
     <div className="relative h-screen">
@@ -23,8 +26,8 @@ const Dashboard = () => {
       </div>
 
       <div className="relative z-10">
-        <Navbar />
-        <div className="p-4 text-white">Dashboard Content</div>
+        <Navbar toggleSettings={() => setIsSettingsOpen(!isSettingsOpen)} />
+        <SettingsBar isOpen={isSettingsOpen} />
       </div>
 
       <MusicPlayerModal />

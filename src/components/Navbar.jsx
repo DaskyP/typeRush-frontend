@@ -4,7 +4,8 @@ import ProfileModal from "./ProfileModal";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
-const Navbar = () => {
+// eslint-disable-next-line react/prop-types
+const Navbar = ({ toggleSettings }) => {
   const { user } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [avatar, setAvatar] = useState(user?.avatar ? `${API_URL}${user.avatar}` : "");
@@ -18,8 +19,11 @@ const Navbar = () => {
   return (
     <>
       <nav className="flex justify-between items-center px-10 py-6 bg-transparent">
-        <div className="flex items-center space-x-25">
-          <button className="rounded-lg hover:bg-gray-800 transition">
+        <div className="flex items-center space-x-6">
+          <button 
+            className="rounded-lg hover:bg-gray-800 transition"
+            onClick={toggleSettings} 
+          >
             <img src="/settings.svg" alt="Configuración" className="w-10 h-10" />
           </button>
           <img src="/logobone.svg" alt="TypeRush" className="h-10" />

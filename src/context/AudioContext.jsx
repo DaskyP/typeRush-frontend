@@ -25,6 +25,7 @@ export const AudioProvider = ({ children }) => {
     "/sounds/music/So Fresh, So Clean Outkast.mp3",
     "/sounds/music/Superstar (feat. Matthew Santos).mp3",
     "/sounds/music/Whistle.mp3",
+    "/sounds/music/mañana · Tainy · Young Miko · The Marias.mp3"
   ];
 
   useEffect(() => {
