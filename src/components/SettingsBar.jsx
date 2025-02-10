@@ -41,7 +41,7 @@ const SettingsBar = ({ isOpen }) => {
   return (
     <div
       className={`absolute top-[110px] left-1/2 transform -translate-x-1/2 rounded-xl shadow-lg border border-[#000000] p-2 text-white transition-all duration-300 ease-in-out
-      ${isOpen ? "w-[900px] opacity-100 scale-100" : "w-0 opacity-0 scale-90 overflow-hidden"}`}
+      ${isOpen ? "w-[1500px] opacity-100 scale-100" : "w-0 opacity-0 scale-90 overflow-hidden"}`}
       style={{ backgroundColor: "rgba(190, 191, 193, 0.3)" }}
     >
       <div className="flex justify-between items-center px-4 py-2 rounded-lg">
@@ -87,7 +87,7 @@ const SettingsBar = ({ isOpen }) => {
         </button>
 
         {selectedMode === "time" && (
-          <div className="flex space-x-3 transition-opacity duration-300">
+          <div className="flex space-x-25 transition-opacity duration-300">
             <button
               className={`text-xl ${selectedOption === "10s" ? "text-white" : "text-gray-400"}`}
               onClick={() => handleOptionSelect("10s")}
@@ -109,7 +109,7 @@ const SettingsBar = ({ isOpen }) => {
           </div>
         )}
         {isWordsActive && (
-          <div className="flex space-x-3 transition-opacity duration-300">
+          <div className="flex space-x-25 transition-opacity duration-300">
             <button
               className={`text-xl ${selectedOption === "20" ? "text-white" : "text-gray-400"}`}
               onClick={() => handleOptionSelect("20")}
@@ -131,7 +131,7 @@ const SettingsBar = ({ isOpen }) => {
           </div>
         )}
         {selectedMode === "quotes" && (
-          <div className="flex space-x-3 transition-opacity duration-300">
+          <div className="flex space-x-25 transition-opacity duration-300">
             <button
               className={`text-xl ${selectedOption === "5" ? "text-white" : "text-gray-400"}`}
               onClick={() => handleOptionSelect("5")}

@@ -12,7 +12,7 @@ const ProfileTabs = ({ onClose }) => {
         <div className="flex space-x-16 text-xl">
           <button
             className={`pb-2 transition duration-200 ${
-              activeTab === "perfil" ? "font-semibold border-b-2 border-white" : "text-gray-400"
+              activeTab === "perfil" ? "font-semibold " : "text-gray-400"
             }`}
             onClick={() => setActiveTab("perfil")}
           >
@@ -20,7 +20,7 @@ const ProfileTabs = ({ onClose }) => {
           </button>
           <button
             className={`pb-2 transition duration-200 ${
-              activeTab === "config" ? "font-semibold border-b-2 border-white" : "text-gray-400"
+              activeTab === "config" ? "font-semibold " : "text-gray-400"
             }`}
             onClick={() => setActiveTab("config")}
           >
