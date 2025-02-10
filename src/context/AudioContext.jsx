@@ -20,7 +20,7 @@ export const AudioProvider = ({ children }) => {
       cover: "/cover/aurakid.jpg",
     },
     {
-      title: "Bakar",
+      title: "Hell N Back",
       artist: "Desconocido",
       src: "/sounds/music/Bakar.mp3",
       cover: "/cover/hellnback.jpg",
@@ -76,7 +76,7 @@ export const AudioProvider = ({ children }) => {
     {
       title: "Mañana",
       artist: "Tainy, Young Miko, The Marias",
-      src: "/sounds/music/Tainy - Mañana.mp3",
+      src: "/sounds/music/mañana · Tainy · Young Miko · The Marias.mp3",
       cover: "/cover/mañanatainy.jpg",
     },
   ]);

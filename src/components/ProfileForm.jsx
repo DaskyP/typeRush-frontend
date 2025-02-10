@@ -38,7 +38,7 @@ const ProfileForm = ({ onClose }) => {
     if (e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedFile(file);
-      setAvatar(URL.createObjectURL(file)); // Vista previa de la imagen seleccionada
+      setAvatar(URL.createObjectURL(file)); 
     }
   };
 
@@ -148,7 +148,6 @@ const ProfileForm = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Avatar */}
         <div className="flex flex-col items-center">
           <img src={avatar} alt="Avatar" className="w-60 h-60 rounded-full border-2 border-gray-500 object-cover" />
           <label className="mt-4 flex items-center space-x-2 bg-gray-700 px-3 py-1 text-white rounded-lg cursor-pointer hover:bg-gray-600 transition">
@@ -158,7 +157,6 @@ const ProfileForm = ({ onClose }) => {
         </div>
       </div>
 
-      {/* Botones */}
       <div className="flex justify-end space-x-4 mt-6">
         <button type="button" onClick={onClose} className="bg-gray-600 px-4 py-2 text-white rounded hover:bg-gray-500 transition">Cancelar</button>
         <button type="submit" className="bg-green-600 px-4 py-2 text-white rounded hover:bg-green-500 transition">Guardar</button>

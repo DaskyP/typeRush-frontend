@@ -107,7 +107,7 @@ const MusicPlayerModal = () => {
       )}
 
       <div
-        className={`fixed bottom-4 left-4 bg-[#222222] border border-[#000000] p-4 rounded-lg shadow-lg text-white w-84 transition-all duration-300 ease-in-out
+        className={`fixed bottom-4 z-10 left-4 bg-[#222222] border border-[#000000] p-4 rounded-lg shadow-lg text-white w-84 transition-all duration-300 ease-in-out
           ${isFixed || isHovered ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0 pointer-events-none"}
           ${showQueue ? "h-96" : "h-40"}`}
         onMouseEnter={() => setIsHovered(true)}

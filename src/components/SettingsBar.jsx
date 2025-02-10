@@ -67,7 +67,7 @@ const SettingsBar = ({ isOpen }) => {
           }`}
           onClick={() => handleModeSelect("time")}
         >
-          <span>⏳ Time</span>
+          <span>Time</span>
         </button>
         <button
           className={`flex items-center space-x-2 text-lg ${
@@ -75,7 +75,7 @@ const SettingsBar = ({ isOpen }) => {
           }`}
           onClick={() => handleModeSelect("words")}
         >
-          <span>🔠 Words</span>
+          <span>Words</span>
         </button>
         <button
           className={`flex items-center space-x-2 text-lg ${
@@ -83,7 +83,7 @@ const SettingsBar = ({ isOpen }) => {
           }`}
           onClick={() => handleModeSelect("quotes")}
         >
-          <span>💬 Quotes</span>
+          <span>Quotes</span>
         </button>
 
         {selectedMode === "time" && (
