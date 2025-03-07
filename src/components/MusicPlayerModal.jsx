@@ -144,7 +144,7 @@ const MusicPlayerModal = () => {
         <div className="flex justify-between mb-2">
           <button
             onClick={() => setShowQueue(!showQueue)}
-            className="px-3 py-1 rounded"
+            className="px-3 py-1 rounded hover:bg-gray-700"
           >
             <img
               src="/queue.svg"
@@ -152,16 +152,16 @@ const MusicPlayerModal = () => {
               className="w-6 h-6 hover:opacity-80"
             />
           </button>
-          <button onClick={handlePrevSong}>
+          <button onClick={handlePrevSong} className="hover:bg-gray-700">
             <img src="/prev.svg" className="w-6 h-6" />
           </button>
-          <button onClick={handlePlayPause}>
+          <button onClick={handlePlayPause} className="hover:bg-gray-700">
             <img
               src={`/${isPlaying ? "pause" : "play"}.svg`}
               className="w-6 h-6"
             />
           </button>
-          <button onClick={handleNextSong}>
+          <button onClick={handleNextSong} className="hover:bg-gray-700">
             <img src="/next.svg" className="w-6 h-6" />
           </button>
         </div>

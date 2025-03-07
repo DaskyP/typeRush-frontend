@@ -5,11 +5,12 @@ import { loginUser } from "../api";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
+import OAuthButton from "../components/OAuthButton"; 
 
 const LoginForm = () => {
   const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -23,8 +24,6 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       const response = await loginUser(values);
 
-      console.log("Datos del usuario al iniciar sesión:", response.user); 
-
       if (response.token) {
         login(response.user, response.token);
         navigate("/");
@@ -33,6 +32,14 @@ const LoginForm = () => {
       }
     },
   });
+
+  const handleGithubLogin = () => {
+    window.location.href = "http://localhost:5000/auth/github";
+  };
+
+  const handleDiscordLogin = () => {
+    window.location.href = "http://localhost:5000/auth/discord";
+  };
 
   return (
     <AuthLayout backgroundImage="/prueba2.jpg">
@@ -87,13 +94,10 @@ const LoginForm = () => {
           </Link>
         </p>
       </div>
-      <div className="flex justify-between mt-6 ">
-        <button className="flex items-center justify-center w-36 h-12 border border-gray-500 rounded-lg bg-[#242424] hover:bg-[#2d2d2d] transition">
-          <img src="/discord.svg" alt="Discord" className="w-8 h-8" />
-        </button>
-        <button className="flex items-center justify-center w-36 h-12 border border-gray-500 rounded-lg bg-[#242424] hover:bg-[#2d2d2d] transition">
-          <img src="/github.svg" alt="GitHub" className="w-8 h-8" />
-        </button>
+
+      <div className="flex justify-between mt-6">
+        <OAuthButton provider="discord" logo="/discord.svg" onClick={handleDiscordLogin} />
+        <OAuthButton provider="github" logo="/github.svg" onClick={handleGithubLogin} />
       </div>
     </AuthLayout>
   );

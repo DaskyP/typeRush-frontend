@@ -6,9 +6,15 @@ import Navbar from "../components/Navbar";
 import MusicPlayerModal from "../components/MusicPlayerModal";
 import SettingsBar from "../components/SettingsBar";
 import Keyboard from "../components/Keyboard";
+import WordDisplay from "../components/WordDisplay";
+
 const Dashboard = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [pressedKey, setPressedKey] = useState(null);
+  const [selectedMode, setSelectedMode] = useState("words");
+  const [wordCount, setWordCount] = useState(15); 
+  const [isPunctuationActive, setIsPunctuationActive] = useState(false);
+  const [isNumbersActive, setIsNumbersActive] = useState(false);
   const particlesInitialized = useRef(false);
 
   useEffect(() => {
@@ -18,6 +24,7 @@ const Dashboard = () => {
         await loadSlim(engine);
       });
     }
+
     const handleKeyDown = (event) => {
       setPressedKey(event.key.toLowerCase());
     };
@@ -43,8 +50,22 @@ const Dashboard = () => {
 
       <div className="relative z-10">
         <Navbar toggleSettings={() => setIsSettingsOpen(!isSettingsOpen)} />
-        <SettingsBar isOpen={isSettingsOpen} />
+        <SettingsBar 
+          isOpen={isSettingsOpen} 
+          setSelectedMode={setSelectedMode} 
+          setWordCount={setWordCount} 
+          setIsPunctuationActive={setIsPunctuationActive} 
+          setIsNumbersActive={setIsNumbersActive}
+        />
       </div>
+
+      <WordDisplay 
+        selectedMode={selectedMode} 
+        wordCount={wordCount} 
+        punctuation={isPunctuationActive} 
+        numbers={isNumbersActive} 
+        key={`${selectedMode}-${wordCount}-${isPunctuationActive}-${isNumbersActive}`}
+      />
 
       <MusicPlayerModal />
 
@@ -56,3 +77,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

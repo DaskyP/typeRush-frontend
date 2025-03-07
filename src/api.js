@@ -12,7 +12,22 @@ export const fetchData = async (endpoint, options = {}) => {
     return null;
   }
 };
+export const fetchWords = async (mode, count, punctuation = false, numbers = false) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/words?mode=${mode}&count=${count}&punctuation=${punctuation}&numbers=${numbers}`
+    );
 
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error al obtener palabras:", error);
+    return null;
+  }
+};
 export const registerUser = async (userData) => {
     try {
       const response = await fetch(`${API_URL}/api/auth/register`, {

@@ -19,7 +19,7 @@ const ProfileTabs = ({ onClose }) => {
             Perfil
           </button>
           <button
-            className={`pb-2 transition duration-200 ${
+            className={`pb-2 transigtion duration-200 ${
               activeTab === "config" ? "font-semibold " : "text-gray-400"
             }`}
             onClick={() => setActiveTab("config")}
