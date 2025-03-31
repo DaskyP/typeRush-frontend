@@ -1,8 +1,21 @@
-# React + Vite
+## Plan de Pruebas - TypeRush
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Objetivo
+Verificar que la funcionalidad principal del juego funciona correctamente, incluyendo:
+- Registro e inicio de sesión.
+- Registro de puntuaciones y estadísticas.
+- Modo de juego (time, words, quotes).
 
-Currently, two official plugins are available:
+### Tipos de Pruebas
+- **Unitarias**: Verificar funciones individuales del backend.
+- **Integración**: Asegurar que frontend y backend se comunican correctamente.
+- **End-to-End (E2E)**: Validar la experiencia completa del usuario.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Herramientas
+- **Jest** para pruebas unitarias en backend.
+- **Cypress** para pruebas E2E en frontend.
+
+### Criterios de Aceptación
+- Un usuario debe poder registrarse y autenticarse sin errores.
+- El backend debe guardar correctamente las puntuaciones.
+- La interfaz debe mostrar las estadísticas sin bugs.

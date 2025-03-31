@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AudioProvider } from "./context/AudioContext";
 import GithubSuccess from "./components/GIthubSucces";
+import DiscordSuccess from "./components/DiscordSucess";
 const App = () => {
   return (
         <AudioProvider>
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/github-success" element={<GithubSuccess />} />
+        <Route path="/discord-success" element={<DiscordSuccess />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
         </Route>

@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 const OAuthButton = ({ provider, logo, onClick }) => {
     const colors = {
       github: "bg-[#242424] hover:bg-[#2d2d2d]",
-      discord: "bg-[#7289da] hover:bg-[#5b6eae]", 
+      discord: "bg-[#242424] hover:bg-[#2d2d2d]", 
     };
   
     return (
